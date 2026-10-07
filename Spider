@@ -1,0 +1,549 @@
+--// SKYBOX + TEXTURE REPLACEMENT DIABLOOO
+
+local Lighting = game:GetService("Lighting")
+
+--// SKYBOX
+local skyData = {
+	SkyboxBk = "rbxassetid://114408840735860",
+	SkyboxDn = "rbxassetid://104222811442709",
+	SkyboxFt = "rbxassetid://116389225251529",
+	SkyboxLf = "rbxassetid://114518771382917",
+	SkyboxRt = "rbxassetid://71482058197622",
+	SkyboxUp = "rbxassetid://112376487201479"
+}
+
+local function applySkybox()
+	local sky = Lighting:FindFirstChildOfClass("Sky")
+
+	if not sky then
+		sky = Instance.new("Sky")
+		sky.Parent = Lighting
+	end
+
+	for property, value in pairs(skyData) do
+		sky[property] = value
+	end
+end
+
+applySkybox()
+
+--// KEEP SKYBOX ACTIVE
+Lighting.ChildRemoved:Connect(function(child)
+	if child:IsA("Sky") then
+		task.wait()
+		applySkybox()
+	end
+end)
+
+Lighting.ChildAdded:Connect(function(child)
+	if child:IsA("Sky") then
+		task.wait()
+		applySkybox()
+	end
+end)
+
+
+--// TEXTURE REPLACEMENT
+
+local function getAsset(url: string): string
+	local success, result = pcall(function()
+		if writefile and isfile and getcustomasset then
+			local fileName = "tex_" .. tostring(string.len(url) % 99999) .. "_" .. tostring(string.byte(url, 10) or 1) .. ".asset"
+			if not isfile(fileName) then
+				local data = game:HttpGet(url)
+				if data and #data > 80 then
+					writefile(fileName, data)
+				end
+			end
+			local asset = getcustomasset(fileName)
+			if asset and asset ~= "" then
+				return asset
+			end
+		end
+		return url
+	end)
+	return (success and result) or url
+end
+
+local Rules = {
+	{ids = {7658055825}, url = "https://raw.githubusercontent.com/betterthanbefore0207767837-cyber/Diablo/refs/heads/main/C88C4377-9AC0-4540-8E24-E75DE1543DD0.png"},
+	{ids = {17803962335}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/attachment.png"},
+	{ids = {13854780213}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/logo.png"},
+	{ids = {13854780042}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/heartleft.png"},
+	{ids = {81461991645938}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/lvl.png"},
+	{ids = {16802957270}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/heartbroken.png"},
+	{ids = {99115398611290}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/icbtw.png"},
+	{ids = {133917828562858, 121503061771505}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/mine.webp"},
+	{ids = {17175092502, 17094014569}, url = "rbxassetid://72106446453934"},
+
+	{ids = {106623367501544, 131795064007344, 73543520622815}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/f.png"},
+	{ids = {80716950169934}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/d-.png"},
+	{ids = {136100661820261}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/d.png"},
+	{ids = {107898816876115}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/d+.png"},
+	{ids = {134520747948636}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/c-.png"},
+	{ids = {114166096331502}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/c.png"},
+	{ids = {90039594400813}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/c+.png"},
+	{ids = {133903971285645}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/b-.png"},
+	{ids = {82834564754747}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/b.png"},
+	{ids = {73345783863790}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/b+.png"},
+	{ids = {113997689031026}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/a-.png"},
+	{ids = {88059506918419}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/a.png"},
+	{ids = {112183171942172}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/a+.png"},
+	{ids = {104871954739030}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/s.png"},
+	{ids = {109012386782238}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/ss.png"},
+	{ids = {127982903682334}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/u.png"},
+	{ids = {133793956251748}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/top200xrank.png"},
+	{ids = {116941545385923}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/nemx.png"},
+
+	{ids = {17138490999}, url = "rbxassetid://1721952882"},
+	{ids = {103035811146294}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/allclear.base.ogg"},
+	{ids = {16810041280}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/allclear.base.ogg"},
+	{ids = {16810321565}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/allclear.base.ogg"},
+	{ids = {16770456156, 16492958314}, url = "rbxassetid://2428506580"},
+	{ids = {16537337310, 16537449730}, url = "rbxassetid://70643163489676"},
+	{ids = {17826470563}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/theeyellow.ogg"},
+	{ids = {18221725850, 18239670056, 18221726246}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/winnerwinner.ogg"},
+	{ids = {17026600996}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/showscore.base.ogg"},
+	{ids = {16530229616}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/kill1.ogg"},
+	{ids = {16530229541}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/kill2.ogg"},
+	{ids = {16530229695}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/kill3.ogg"},
+	{ids = {8483887957}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/clearspin.base.ogg"},
+	{ids = {6384899588}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/lego-build.mp3"},
+	{ids = {16737738420}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/Sliding.mp3"},
+	{ids = {70643163489676}, url = "rbxassetid://17405655409"},
+	{ids = {91547731028928}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/studio-audience-awwww-sound-fx.mp3"},
+	{ids = {138975587469438}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/final-fantasy-vii-victory-fanfare-1.mp3"},
+	{ids = {17697682466, 17733314783}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/kuchu-toshi.mp3"},
+	{ids = {177266782}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/menuclick.base.ogg"},
+	{ids = {18525513345}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/achievement_3.base.ogg"},
+	{ids = {13110130082}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/target.base.ogg"},
+	{ids = {17467242617}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/bluer.ogg"},
+	{ids = {17016581922}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/elimin.mp3"},
+
+	{ids = {6384899588}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/AUDIO_APPEARANCE.wav"},
+	{ids = {8483887957}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_weaponpull.wav"},
+	{ids = {16537337310, 16537449730}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_break1.wav"},
+	{ids = {17016581922}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/break2.ogg"},
+	{ids = {16810321565}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_closet_impact.ogg"},
+	{ids = {16770456156}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/mus_sfx_a_lithit.wav"},
+	{ids = {177266782}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_select.wav"},
+	{ids = {16492958314}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_scytheburst.wav"},
+	{ids = {103035811146294}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_b.wav"},
+	{ids = {16810041280}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/mus_sfx_abreak.wav"},
+	{ids = {16530229695, 16530229541, 16530229616}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/mus_sfx_gigapunch.wav"},
+	{ids = {17138490999}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/heal.ogg"},
+	{ids = {18525513345}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_dimbox.wav"},
+	{ids = {13110130082}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_credit_s.wav"},
+	{ids = {17153811469}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_breakc.wav"},
+	{ids = {17826470563}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/Finale.ogg"},
+	{ids = {17026600996}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_heavydamage.wav"},
+	{ids = {17467242617}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/sdfinal.ogg"},
+	{ids = {18221725850, 18239670056, 18221726246}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_dumbvictory.wav"},
+	{ids = {17697682466, 17733314783}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/Hotel.mp3"},
+}
+
+local IdMap: {[string]: string} = {}
+
+for _, rule in ipairs(Rules) do
+	local asset = getAsset(rule.url)
+	for _, id in ipairs(rule.ids) do
+		IdMap[tostring(id)] = asset
+	end
+end
+
+local function apply(obj: Instance)
+	if not obj then return end
+
+	local function replace(property: string)
+		local success, value = pcall(function()
+			return obj[property]
+		end)
+		if not success or type(value) ~= "string" then return end
+		local id = string.match(value, "%d+")
+		if id and IdMap[id] then
+			pcall(function()
+				obj[property] = IdMap[id]
+			end)
+		end
+	end
+
+	if obj:IsA("Sound") then
+		replace("SoundId")
+	elseif obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
+		replace("Image")
+	elseif obj:IsA("Decal") or obj:IsA("Texture") then
+		replace("Texture")
+	elseif obj:IsA("MeshPart") then
+		replace("TextureID")
+	end
+end
+
+task.wait(2)
+
+for _, v in ipairs(game:GetDescendants()) do
+	task.spawn(apply, v)
+end
+
+game.DescendantAdded:Connect(function(obj)
+	task.defer(apply, obj)
+end)
+
+--// HIT SOUND - PLAYERS + NPC DUMMIES
+
+local SoundService = game:GetService("SoundService")
+
+local HIT_SOUND_ID = "rbxassetid://80064459083952"
+local HIT_VOLUME = 0.2
+
+local watched = {}
+
+local function playHitSound()
+	local sound = Instance.new("Sound")
+	sound.Name = "HitSound"
+	sound.SoundId = HIT_SOUND_ID
+	sound.Volume = HIT_VOLUME
+	sound.Parent = SoundService
+
+	sound:Play()
+
+	sound.Ended:Once(function()
+		sound:Destroy()
+	end)
+end
+
+local function watchCharacter(character)
+	if watched[character] then
+		return
+	end
+
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+	if not humanoid then
+		return
+	end
+
+	watched[character] = true
+
+	local lastHealth = humanoid.Health
+
+	humanoid.HealthChanged:Connect(function(newHealth)
+		if newHealth < lastHealth and newHealth > 0 then
+			playHitSound()
+		end
+
+		lastHealth = newHealth
+	end)
+end
+
+--// Existing players/NPCs
+for _, object in ipairs(workspace:GetDescendants()) do
+	if object:IsA("Model") and object:FindFirstChildOfClass("Humanoid") then
+		watchCharacter(object)
+	end
+end
+
+--// New players/NPC dummies
+workspace.DescendantAdded:Connect(function(object)
+	if object:IsA("Humanoid") then
+		local character = object.Parent
+
+		if character and character:IsA("Model") then
+			task.defer(function()
+				watchCharacter(character)
+			end)
+		end
+	end
+end)
+
+--// Sata Andagi Kill Sound
+--// Works for players AND NPC dummies
+
+local Players = game:GetService("Players")
+local SoundService = game:GetService("SoundService")
+
+local SOUND_ID = "rbxassetid://135097031120155"
+
+local function playKillSound()
+    local sound = Instance.new("Sound")
+    sound.Name = "SataAndagiKillSound"
+    sound.SoundId = SOUND_ID
+    sound.Volume = 1
+    sound.Parent = SoundService
+    sound:Play()
+
+    sound.Ended:Once(function()
+        sound:Destroy()
+    end)
+end
+
+local watched = {}
+
+local function watchCharacter(character)
+    if watched[character] then
+        return
+    end
+
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then
+        return
+    end
+
+    watched[character] = true
+
+    humanoid.Died:Connect(function()
+        playKillSound()
+    end)
+end
+
+-- Watch existing characters/dummies
+for _, object in ipairs(workspace:GetDescendants()) do
+    if object:IsA("Model") and object:FindFirstChildOfClass("Humanoid") then
+        watchCharacter(object)
+    end
+end
+
+-- Watch newly spawned players and dummies
+workspace.DescendantAdded:Connect(function(object)
+    if object:IsA("Humanoid") then
+        local character = object.Parent
+
+        if character and character:IsA("Model") then
+            watchCharacter(character)
+        end
+    end
+end)
+
+-- @r37q - Rick-C17 : Wubba Lubba dub dub 
+do
+    local Players = game:GetService("Players")
+    local lp = Players.LocalPlayer
+
+    local function bitch(model)
+        if not model or not model.Parent then return end
+        if not model.Name:find(lp.Name, 1, true) then return end
+
+        for _, name in ipairs({"RightArm", "LeftArm"}) do
+            local arm = model:FindFirstChild(name)
+            if arm then
+                pcall(function() arm:Destroy() end)
+            end
+        end
+    end
+
+    local function fuckyouSkid()
+        -- @r37q made all of this
+        local vms = workspace:FindFirstChild("ViewModels")
+        if not vms then return end
+        local fp = vms:FindFirstChild("FirstPerson")
+        if not fp then return end
+        for _, m in ipairs(fp:GetChildren()) do
+            if m:IsA("Model") then
+                bitch(m)
+            end
+        end
+    end
+
+    fuckyouSkid()
+
+    local vms = workspace:FindFirstChild("ViewModels")
+    if vms then
+        -- @r37q made all of this
+        vms.DescendantAdded:Connect(function(obj)
+            if not obj or not obj.Parent then return end
+            if obj.Name == "RightArm" or obj.Name == "LeftArm" then
+                local m = obj.Parent
+                while m and m ~= vms do
+                    if m:IsA("Model") and m.Name:find(lp.Name, 1, true) then
+                        task.defer(function() pcall(function() obj:Destroy() end) end)
+                        return
+                    end
+                    m = m.Parent
+                end
+            end
+        end)
+    else
+        -- @r37q made all of this
+        workspace.ChildAdded:Connect(function(c)
+            if c.Name == "ViewModels" then
+                c.DescendantAdded:Connect(function(obj)
+                    if obj.Name == "RightArm" or obj.Name == "LeftArm" then
+                        task.defer(fuckyouSkid)
+                    end
+                end)
+            end
+        end)
+    end
+
+    -- @r37q made all of this | DONT REMOVE OR I'LL SUE
+    task.spawn(function()
+        while task.wait(0.5) do
+            pcall(fuckyouSkid)
+        end
+    end)
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- @r37q made all of this
+-- @r37q - Rick-C17 : Wubba Lubba dub dub 
+do
+    local Players = game:GetService("Players")
+    local lp = Players.LocalPlayer
+
+    local function bitch(model)
+        if not model or not model.Parent then return end
+        if not model.Name:find(lp.Name, 1, true) then return end
+
+        for _, name in ipairs({"RightArm", "LeftArm"}) do
+            local arm = model:FindFirstChild(name)
+            if arm then
+                pcall(function() arm:Destroy() end)
+            end
+        end
+    end
+
+    local function fuckyouSkid()
+        -- @r37q made all of this
+        local vms = workspace:FindFirstChild("ViewModels")
+        if not vms then return end
+        local fp = vms:FindFirstChild("FirstPerson")
+        if not fp then return end
+        for _, m in ipairs(fp:GetChildren()) do
+            if m:IsA("Model") then
+                bitch(m)
+            end
+        end
+    end
+
+    fuckyouSkid()
+
+    local vms = workspace:FindFirstChild("ViewModels")
+    if vms then
+        -- @r37q made all of this
+        vms.DescendantAdded:Connect(function(obj)
+            if not obj or not obj.Parent then return end
+            if obj.Name == "RightArm" or obj.Name == "LeftArm" then
+                local m = obj.Parent
+                while m and m ~= vms do
+                    if m:IsA("Model") and m.Name:find(lp.Name, 1, true) then
+                        task.defer(function() pcall(function() obj:Destroy() end) end)
+                        return
+                    end
+                    m = m.Parent
+                end
+            end
+        end)
+    else
+        -- @r37q made all of this
+        workspace.ChildAdded:Connect(function(c)
+            if c.Name == "ViewModels" then
+                c.DescendantAdded:Connect(function(obj)
+                    if obj.Name == "RightArm" or obj.Name == "LeftArm" then
+                        task.defer(fuckyouSkid)
+                    end
+                end)
+            end
+        end)
+    end
+
+    -- @r37q made all of this | DONT REMOVE OR I'LL SUE
+    task.spawn(function()
+        while task.wait(0.5) do
+            pcall(fuckyouSkid)
+        end
+    end)
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- @r37q made all of this
